@@ -15,6 +15,3 @@ export class AI {
         return [cordX, cordY]
     }
 }
-
-const ai: AI = new AI();
-console.log(ai.getRandomCords())
