@@ -1,18 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ship = void 0;
-var Ship = /** @class */ (function () {
-    function Ship(length) {
+class Ship {
+    constructor(length) {
         this.hits = 0;
         this.length = length;
     }
-    Ship.prototype.hit = function () {
+    hit() {
         this.hits++;
-    };
-    Ship.prototype.isSunk = function () {
+    }
+    isSunk() {
         return this.hits >= this.length;
-    };
-    return Ship;
-}());
+    }
+}
 exports.Ship = Ship;
-var ship = new Ship(5);
+//# sourceMappingURL=Ship.js.map
