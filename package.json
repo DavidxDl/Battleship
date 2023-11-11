@@ -1,0 +1,26 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "A Battleship Game",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidxDl/Battleship.git"
+  },
+  "author": "DavidxDl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidxDl/Battleship/issues"
+  },
+  "homepage": "https://github.com/DavidxDl/Battleship#readme",
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
+    "jest": "^29.7.0"
+  }
+}
