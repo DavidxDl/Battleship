@@ -1,7 +1,7 @@
 import { Gameboard } from "./Gameboard";
 
 test('build the board', () => {
-    const gameboard = new Gameboard(4);
-    gameboard.placeShip([1,1], 3)
+    const gameboard = new Gameboard(5);
+    gameboard.placeShip([3,2], 2)
     console.log(gameboard.boardGraph)
 })
