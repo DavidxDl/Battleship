@@ -1,4 +1,4 @@
-import { Gameboard } from "./Gameboard";
+import { Gameboard } from "./Gameboard.js";
 
 export function createGameboardDom(boardSize) {
     const gameboard = new Gameboard(boardSize);
@@ -6,13 +6,15 @@ export function createGameboardDom(boardSize) {
 
     for (let i = 0; i < gameboard.boardSize; i++) {
         for(let j = 0; j < this.boardSize; j++) {
-            domBoard.append(createBoardSquare(`${i},${j}`));
+            const square = createBoardSquare(`${i},${j}`)
+            domBoard.append(square);
         }
     }
+    return gameboard
 
 }
 
-function createBoardSquare(id) {
+export function createBoardSquare(id) {
     const square = document.createElement('div');
     square.classList.add('boardSquare');
     square.id = id;
