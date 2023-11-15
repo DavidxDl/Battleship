@@ -3,4 +3,7 @@ import { Ship} from "./Ship";
 import { createGameboardDom } from "./CreateboardDom";
 
 
-createGameboardDom(10);
+const h1 = document.getElementById('h1');
+h1.innerText = 'HAHAHA'
+
+
