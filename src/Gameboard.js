@@ -15,26 +15,43 @@ export class Gameboard {
         }
     }
 
+    isValidPosition([x, y]) {
+        return x >= 0 && x < this.boardSize && y >= 0 && y < this.boardSize;
+    }
+
     placeShip([x, y], length) {
         const ship = new Ship(length);
-        if(this.boardGraph.get(`${x},${y}`) === null) {
-            this.boardGraph.set(`${x},${y}`, ship);
+
+
+        if(this.isValidPosition([x, y]) && this.boardGraph.get(`${x},${y}`) === null) {
             let index = 0;
-            let offset = 1;
-            const initialPostition = [x, y];
+            let currentX = x;
+            let currentY = y;
+            let horizontalPlacement = true;
+
             while (index < length) {
-                let targetNode = `${x},${y + offset}`;
-                if (this.boardGraph.get(targetNode) === null) {
-                    this.boardGraph.set(targetNode, ship);
+                const position = `${currentX},${currentY}`;
+
+                if (this.isValidPosition([currentX, currentY]) && this.boardGraph.get(position) === null) {
+                    this.boardGraph.set(position, ship);
                     index++;
-                    offset = offset > 0 ? offset++ : offset--;
-                } else {
-                    offset = -1;
-                    if(this.boardGraph.get(`${x}, ${y + offset}`) !== null) {
-                        throw new Error('no enough Space');
+                    if (horizontalPlacement) {
+                        if (currentX + 1 < this.boardSize) {
+                            currentX++;
+                        } else {
+                            horizontalPlacement = true;
+                            currentY++;
+                        }
+                    } else {
+                        if (currentY + 1 < this.boardSize) {
+                            currentY++;
+                        } else {
+                            throw new Error('no enought Space');
+                        }
                     }
-                }
+                } else throw new Error('not enough space or invalid position');
             }
-        } else throw new Error('Wrong Coordinates');
+
+        } else throw new Error('invalid coordinate');
     }
 }

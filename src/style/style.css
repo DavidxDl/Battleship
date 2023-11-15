@@ -1,0 +1,12 @@
+.boardSquare {
+    width: 20px;
+    height: 20px;
+    background-color: brown;
+}
+
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+    background-color: black;
+}
