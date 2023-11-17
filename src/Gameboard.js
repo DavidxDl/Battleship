@@ -1,8 +1,11 @@
-import { Ship } from "./Ship";
+import { Ship } from "./Ship.js";
 
 export class Gameboard {
     constructor(boardSize) {
+        this.missedShots = new Set();
+        this.hitShots = new Set()
         this.boardSize = boardSize;
+        this.shipsLeft = 0;
         this.boardGraph = new Map();
         this.buildBoard();
     }
@@ -21,7 +24,7 @@ export class Gameboard {
 
     placeShip([x, y], length) {
         const ship = new Ship(length);
-
+        this.shipsLeft++;
 
         if(this.isValidPosition([x, y]) && this.boardGraph.get(`${x},${y}`) === null) {
             let index = 0;
@@ -49,9 +52,33 @@ export class Gameboard {
                             throw new Error('no enought Space');
                         }
                     }
-                } else throw new Error('not enough space or invalid position');
+                } else {
+                    throw new Error('not enough space or invalid position');
+                    this.shipsLeft--;
+                }
             }
 
-        } else throw new Error('invalid coordinate');
+        } else { 
+            throw new Error('invalid coordinate');
+            this.shipsLeft--;
+        }
     }
+
+    recieveAttack([x, y]) {
+        if (this.isValidPosition([x, y]) && this.boardGraph.get(`${x},${y}`) !== null) {
+            if (!this.hitShots.has(`${x},${y}`)){
+                const ship = this.boardGraph.get(`${x},${y}`);
+                ship.hit();
+                if(ship.isSunk()) this.shipsLeft--;
+                this.hitShots.add(`${x},${y}`);
+                return true;
+            }
+        } else if (this.isValidPosition([x,y]) && this.boardGraph.get(`${x},${y}`) === null) {
+            console.log('You Missed The Shot!')
+            this.missedShots.add(`${x},${y}`);
+            return false;
+        }
+    }
+
+    
 }
