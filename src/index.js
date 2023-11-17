@@ -50,13 +50,13 @@ setInterval(() => {
             h3.innerText = 'Ships left: ' + playerBoard.shipsLeft;
             if (playerBoard.shipsLeft === 0) {
                 h1.innerText = 'Game Over!';
-            } else if (playerBoard.recieveAttack(randomCords) ===  false) { // missed the shot
-                document.getElementById(`x${randomCords[0]}y${randomCords[1]}`).id = 'missed';
-                player.isPlayersTurn = true;
-            }
+            } 
+        } else if (playerBoard.recieveAttack(randomCords) ===  false) { // missed the shot
+            document.getElementById(`x${randomCords[0]}y${randomCords[1]}`).id = 'missed';
+            player.isPlayersTurn = true;
         }
     }
-}, 500);
+}, 1000);
 
 
 
