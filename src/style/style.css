@@ -20,16 +20,29 @@
     background-color: gray;
 }
 
-.board {
+.boards{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    height: 400px;
-    height: 400px;
+    align-items: center;
+    width: 364px;
+    min-height: 100vh;
     background-color: blue;
     gap: 3px;
 }
 
-body {
-    background-color: black;
+#playerBoard, #cpuBoard {
+    display: flex;
+    flex-wrap: wrap;
+    place-items: center;
+    
+
 }
+
+body {
+    background-color: #242424;
+    display: grid;
+    place-items: center;
+
+}
+
