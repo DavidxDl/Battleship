@@ -4,9 +4,6 @@ import { Ship } from "./Ship.js";
 import { createGameboardDom, createBoardSquare } from "./CreateboardDom.js";
 import ComputerAi from "./ComputerAi.js";
 
-const body = document.querySelector("body");
-const domBoards = document.getElementById("boards");
-const nodes = document.querySelectorAll(".boardSquare");
 const h1 = document.querySelector("h1");
 const domPlayerShipsLeft = document.querySelector("#playerShipsLeft");
 const domCpuShipsLeft = document.querySelector("#cpuShipsLeft");
@@ -14,9 +11,9 @@ const domCpuShipsLeft = document.querySelector("#cpuShipsLeft");
 const player = { isPlayersTurn: true };
 const playerBoard = createGameboardDom(7, "playerBoard");
 const computer = new ComputerAi(playerBoard.boardSize);
+const cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
 playerBoard.placeShip([0, 0], 3);
 playerBoard.placeShip([3, 3], 5);
-const cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
 cpuBoard.placeShip(computer.getRandomCords(), 3);
 cpuBoard.placeShip(computer.getRandomCords(), 2);
 cpuBoard.placeShip(computer.getRandomCords(), 1);
@@ -57,6 +54,7 @@ setInterval(() => {
       document.getElementById(
         `playerBoardx${randomCords[0]}y${randomCords[1]}`
       ).dataset.state = "hit";
+
       player.isPlayersTurn = true;
       domPlayerShipsLeft.innerText =
         "Player Ships left: " + playerBoard.shipsLeft;
