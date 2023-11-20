@@ -13,19 +13,20 @@ const domCpuShipsLeft = document.querySelector("#cpuShipsLeft");
 
 const player = { isPlayersTurn: true };
 const playerBoard = createGameboardDom(7, "playerBoard");
+const computer = new ComputerAi(playerBoard.boardSize);
 playerBoard.placeShip([0, 0], 3);
 playerBoard.placeShip([3, 3], 5);
 const cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
-cpuBoard.placeShip([0, 0], 3);
-cpuBoard.placeShip([3, 3], 2);
-cpuBoard.placeShip([5, 2], 1);
+cpuBoard.placeShip(computer.getRandomCords(), 3);
+cpuBoard.placeShip(computer.getRandomCords(), 2);
+cpuBoard.placeShip(computer.getRandomCords(), 1);
 
 const domCpuBoard = document.getElementById("cpuBoard");
 const domPlayerBoard = document.getElementById("playerBoard");
-const computer = new ComputerAi(playerBoard.boardSize);
 let gameOver = false;
 
 domPlayerShipsLeft.innerText = "Player Ships left: " + playerBoard.shipsLeft;
+domCpuShipsLeft.innerText = "Cpu Ships left: " + cpuBoard.shipsLeft;
 
 domCpuBoard.addEventListener("click", (e) => {
   if (player.isPlayersTurn && !gameOver) {
