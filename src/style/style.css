@@ -2,16 +2,13 @@
     color: blue;
 }
 
-#hit{
+.boardSquare[data-state="hit"]{
     background-color: red;
 }
-#missed {
+.boardSquare[data-state="missed"] {
     background-color:blue;
 }
 
-#x0y0, #x0y1, #x0y2 {
-    background-color:white;
-}
 
 .boardSquare {
     width: 50px;

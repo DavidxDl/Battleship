@@ -20,26 +20,29 @@ cpuBoard.placeShip([0, 0], 3);
 cpuBoard.placeShip([3, 3], 2);
 cpuBoard.placeShip([5, 2], 1);
 
+const domCpuBoard = document.getElementById("cpuBoard");
+const domPlayerBoard = document.getElementById("playerBoard");
+
 const computer = new ComputerAi(playerBoard.boardSize);
 
-domPlayerShipsLeft.innerText = "PLayer Ships left: " + playerBoard.shipsLeft;
+domPlayerShipsLeft.innerText = "Player Ships left: " + playerBoard.shipsLeft;
 
-domBoards.addEventListener("click", (e) => {
+domCpuBoard.addEventListener("click", (e) => {
   if (player.isPlayersTurn) {
-    const cordX = e.target.id[1];
-    const cordY = e.target.id[3];
+    const cordX = e.target.id[9];
+    const cordY = e.target.id[11];
 
-    if (playerBoard.recieveAttack([cordX, cordY]) === true) {
+    if (cpuBoard.recieveAttack([cordX, cordY]) === true) {
       // hit the shot
-      e.target.id = "hit";
+      e.target.dataset.state = "hit";
       player.isPlayersTurn = false;
-      domPlayerShipsLeft.innerText = "Cpu Ships left: " + playerBoard.shipsLeft;
-      if (playerBoard.shipsLeft === 0) {
-        h1.innerText = "Game Over!";
+      domCpuShipsLeft.innerText = "Cpu Ships left: " + cpuBoard.shipsLeft;
+      if (cpuBoard.shipsLeft === 0) {
+        h1.innerText = "Game Over! Player Wins!";
       }
-    } else if (playerBoard.recieveAttack([cordX, cordY]) === false) {
+    } else if (cpuBoard.recieveAttack([cordX, cordY]) === false) {
       // missed the shot
-      e.target.id = "missed";
+      e.target.dataset.state = "missed";
       player.isPlayersTurn = false;
     }
   }
@@ -49,17 +52,20 @@ setInterval(() => {
   if (!player.isPlayersTurn) {
     const randomCords = computer.getRandomCords();
     if (playerBoard.recieveAttack(randomCords) === true) {
-      document.getElementById(`x${randomCords[0]}y${randomCords[1]}`).id =
-        "hit";
+      document.getElementById(
+        `playerBoardx${randomCords[0]}y${randomCords[1]}`
+      ).dataset.state = "hit";
       player.isPlayersTurn = true;
-      domPlayerShipsLeft.innerText = "Ships left: " + playerBoard.shipsLeft;
+      domPlayerShipsLeft.innerText =
+        "Player Ships left: " + playerBoard.shipsLeft;
       if (playerBoard.shipsLeft === 0) {
-        h1.innerText = "Game Over!";
+        h1.innerText = "Game Over! Cpu Wins!";
       }
     } else if (playerBoard.recieveAttack(randomCords) === false) {
       // missed the shot
-      document.getElementById(`x${randomCords[0]}y${randomCords[1]}`).id =
-        "missed";
+      document.getElementById(
+        `playerBoardx${randomCords[0]}y${randomCords[1]}`
+      ).dataset.state = "missed";
       player.isPlayersTurn = true;
     }
   }
