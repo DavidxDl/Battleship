@@ -22,15 +22,15 @@ cpuBoard.placeShip([5, 2], 1);
 
 const domCpuBoard = document.getElementById("cpuBoard");
 const domPlayerBoard = document.getElementById("playerBoard");
-
 const computer = new ComputerAi(playerBoard.boardSize);
+let gameOver = false;
 
 domPlayerShipsLeft.innerText = "Player Ships left: " + playerBoard.shipsLeft;
 
 domCpuBoard.addEventListener("click", (e) => {
-  if (player.isPlayersTurn) {
-    const cordX = e.target.id[9];
-    const cordY = e.target.id[11];
+  if (player.isPlayersTurn && !gameOver) {
+    const cordX = e.target.dataset.x;
+    const cordY = e.target.dataset.y;
 
     if (cpuBoard.recieveAttack([cordX, cordY]) === true) {
       // hit the shot
@@ -39,6 +39,7 @@ domCpuBoard.addEventListener("click", (e) => {
       domCpuShipsLeft.innerText = "Cpu Ships left: " + cpuBoard.shipsLeft;
       if (cpuBoard.shipsLeft === 0) {
         h1.innerText = "Game Over! Player Wins!";
+        gameOver = true;
       }
     } else if (cpuBoard.recieveAttack([cordX, cordY]) === false) {
       // missed the shot
@@ -49,7 +50,7 @@ domCpuBoard.addEventListener("click", (e) => {
 });
 
 setInterval(() => {
-  if (!player.isPlayersTurn) {
+  if (!player.isPlayersTurn && !gameOver) {
     const randomCords = computer.getRandomCords();
     if (playerBoard.recieveAttack(randomCords) === true) {
       document.getElementById(
@@ -60,6 +61,7 @@ setInterval(() => {
         "Player Ships left: " + playerBoard.shipsLeft;
       if (playerBoard.shipsLeft === 0) {
         h1.innerText = "Game Over! Cpu Wins!";
+        gameOver = true;
       }
     } else if (playerBoard.recieveAttack(randomCords) === false) {
       // missed the shot

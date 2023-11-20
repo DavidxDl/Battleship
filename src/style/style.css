@@ -19,11 +19,10 @@
 
 .boards{
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 364px;
-    min-height: 100vh;
+    width: 741px;
+    min-height: 100%;
     background-color: blue;
     gap: 3px;
 }
