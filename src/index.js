@@ -12,15 +12,10 @@ const player = { isPlayersTurn: true };
 const playerBoard = createGameboardDom(7, "playerBoard");
 const computer = new ComputerAi(playerBoard.boardSize);
 const cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
-playerBoard.placeShip([6, 6], 3);
-playerBoard.placeShip([3, 3], 3);
-
-cpuBoard.placeShip(computer.getRandomCords(), 3);
-cpuBoard.placeShip(computer.getRandomCords(), 2);
-cpuBoard.placeShip(computer.getRandomCords(), 1);
-
+console.log(playerBoard.placeShip([1, 1], 3));
 const domCpuBoard = document.getElementById("cpuBoard");
 const domPlayerBoard = document.getElementById("playerBoard");
+cpuBoard.placeAllShips(3);
 let gameOver = false;
 
 domPlayerShipsLeft.innerText = "Player Ships left: " + playerBoard.shipsLeft;
