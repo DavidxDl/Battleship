@@ -4,6 +4,7 @@ export function createGameboardDom(boardSize, id) {
   const gameboard = new Gameboard(boardSize);
   const wrapper = document.createElement("div");
   wrapper.id = id;
+  wrapper.style = `display:grid; grid-template-columns: repeat(${boardSize}, 1fr)`;
   const domBoard = document.getElementById("board");
   for (let x = 0; x < gameboard.boardSize; x++) {
     for (let y = 0; y < gameboard.boardSize; y++) {
