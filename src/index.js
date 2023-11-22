@@ -1,40 +1,26 @@
 import style from "./style/style.css";
 import { createGameboardDom } from "./CreateboardDom.js";
 import ComputerAi from "./ComputerAi.js";
-import { displayGameOver, updateScore } from "./domModule.js";
+import {
+  changeTurnsIndicator,
+  displayGameOver,
+  updateScore,
+} from "./domModule.js";
 
+const restartBtn = document.querySelector(".restartBtn");
 const player = { isPlayersTurn: true };
-const playerBoard = createGameboardDom(7, "playerBoard");
+let playerBoard = createGameboardDom(7, "playerBoard");
 const computer = new ComputerAi(playerBoard.boardSize);
-const cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
-const domCpuBoard = document.getElementById("cpuBoard");
+let cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
+let domCpuBoard = document.getElementById("cpuBoard");
+let gameOver = false;
 playerBoard.placeAllShips(3);
 cpuBoard.placeAllShips(3);
-let gameOver = false;
 
 updateScore("player", playerBoard.shipsLeft);
 updateScore("Cpu", cpuBoard.shipsLeft);
-domCpuBoard.addEventListener("click", (e) => {
-  if (player.isPlayersTurn && !gameOver) {
-    const cordX = e.target.dataset.x;
-    const cordY = e.target.dataset.y;
 
-    if (cpuBoard.recieveAttack([cordX, cordY]) === true) {
-      // hit the shot
-      e.target.dataset.state = "hit";
-      player.isPlayersTurn = false;
-      updateScore("Cpu", cpuBoard.shipsLeft);
-      if (cpuBoard.shipsLeft === 0) {
-        gameOver = true;
-        displayGameOver("Player");
-      }
-    } else if (cpuBoard.recieveAttack([cordX, cordY]) === false) {
-      // missed the shot
-      e.target.dataset.state = "missed";
-      player.isPlayersTurn = false;
-    }
-  }
-});
+domCpuBoard.addEventListener("click", attack);
 
 // the AI will attack with this interval every second will check if is his turn or not
 setInterval(() => {
@@ -46,6 +32,7 @@ setInterval(() => {
       ).dataset.state = "hit";
 
       player.isPlayersTurn = true;
+      changeTurnsIndicator();
       updateScore("player", playerBoard.shipsLeft);
       if (playerBoard.shipsLeft === 0) {
         gameOver = true;
@@ -57,6 +44,54 @@ setInterval(() => {
         `playerBoardx${randomCords[0]}y${randomCords[1]}`
       ).dataset.state = "missed";
       player.isPlayersTurn = true;
+      changeTurnsIndicator();
     }
   }
 }, 1000);
+
+restartBtn.addEventListener("click", restartGame);
+
+function restartGame() {
+  gameOver = false;
+  document.querySelector(".boards").innerHTML = " ";
+  document.querySelector(".gameOver").style.display = "none";
+  playerBoard = createGameboardDom(playerBoard.boardSize, "playerBoard");
+  cpuBoard = createGameboardDom(cpuBoard.boardSize, "cpuBoard");
+  playerBoard.placeAllShips(3);
+  cpuBoard.placeAllShips(3);
+  updateScore("player", playerBoard.shipsLeft);
+  updateScore("cpu", cpuBoard.shipsLeft);
+  domCpuBoard = document.getElementById("cpuBoard");
+  domCpuBoard.addEventListener("click", attack);
+}
+
+function attack(e) {
+  if (player.isPlayersTurn && !gameOver) {
+    const cordX = e.target.dataset.x;
+    const cordY = e.target.dataset.y;
+    if (
+      cpuBoard.missedShots.has(`${cordX},${cordY}`) ||
+      cpuBoard.hitShots.has(`${cordX},${cordY}`)
+    ) {
+      return;
+    }
+
+    const currentAttack = cpuBoard.recieveAttack([cordX, cordY]);
+    if (currentAttack === true) {
+      // hit the shot
+      e.target.dataset.state = "hit";
+      player.isPlayersTurn = false;
+      changeTurnsIndicator();
+      updateScore("Cpu", cpuBoard.shipsLeft);
+      if (cpuBoard.shipsLeft === 0) {
+        gameOver = true;
+        displayGameOver("Player");
+      }
+    } else if (currentAttack === false) {
+      // missed the shot
+      e.target.dataset.state = "missed";
+      player.isPlayersTurn = false;
+      changeTurnsIndicator();
+    }
+  }
+}

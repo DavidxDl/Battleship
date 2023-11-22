@@ -1,5 +1,12 @@
 #playerShipsLeft, #cpuShipsLeft {
-    color: blue;
+    color: white;
+    font-weight: 900;
+    font-size: 22px;
+}
+
+#turnIndicator {
+    color: white;
+    font-size: 25px;
 }
 
 .boardSquare[data-state="hit"]{
@@ -23,8 +30,15 @@
     align-items: center;
     width: 741px;
     min-height: 100%;
-    background-color: blue;
-    gap: 3px;
+    background-color: rgb(61, 61, 61);
+    gap: 20px;
+}
+
+.scores {
+    display: flex;
+    justify-content: space-around;
+    gap: 100px;
+
 }
 
 #playerBoard, #cpuBoard {

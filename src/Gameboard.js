@@ -109,6 +109,11 @@ export class Gameboard {
       return false;
     }
   }
+
+  clearBoard() {
+    this.shipsLeft = 0;
+    this.boardGraph = this.buildBoard();
+  }
 }
 
 function getRandomCords(boardSize) {

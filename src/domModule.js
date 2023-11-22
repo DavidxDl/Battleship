@@ -14,3 +14,8 @@ export function updateScore(player, score) {
     cpuScore.innerText = `Cpu ships left: ${score}`;
   }
 }
+
+export function changeTurnsIndicator() {
+  const turnIndicator = document.getElementById("turnIndicator");
+  turnIndicator.innerText = turnIndicator.innerText === "<" ? ">" : "<";
+}
