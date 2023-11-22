@@ -1,26 +1,19 @@
 import style from "./style/style.css";
-import { Gameboard } from "./Gameboard.js";
-import { Ship } from "./Ship.js";
-import { createGameboardDom, createBoardSquare } from "./CreateboardDom.js";
+import { createGameboardDom } from "./CreateboardDom.js";
 import ComputerAi from "./ComputerAi.js";
-
-const h1 = document.querySelector("h1");
-const domPlayerShipsLeft = document.querySelector("#playerShipsLeft");
-const domCpuShipsLeft = document.querySelector("#cpuShipsLeft");
+import { displayGameOver, updateScore } from "./domModule.js";
 
 const player = { isPlayersTurn: true };
 const playerBoard = createGameboardDom(7, "playerBoard");
 const computer = new ComputerAi(playerBoard.boardSize);
 const cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
-console.log(playerBoard.placeShip([1, 1], 3));
 const domCpuBoard = document.getElementById("cpuBoard");
-const domPlayerBoard = document.getElementById("playerBoard");
+playerBoard.placeAllShips(3);
 cpuBoard.placeAllShips(3);
 let gameOver = false;
 
-domPlayerShipsLeft.innerText = "Player Ships left: " + playerBoard.shipsLeft;
-domCpuShipsLeft.innerText = "Cpu Ships left: " + cpuBoard.shipsLeft;
-
+updateScore("player", playerBoard.shipsLeft);
+updateScore("Cpu", cpuBoard.shipsLeft);
 domCpuBoard.addEventListener("click", (e) => {
   if (player.isPlayersTurn && !gameOver) {
     const cordX = e.target.dataset.x;
@@ -30,10 +23,10 @@ domCpuBoard.addEventListener("click", (e) => {
       // hit the shot
       e.target.dataset.state = "hit";
       player.isPlayersTurn = false;
-      domCpuShipsLeft.innerText = "Cpu Ships left: " + cpuBoard.shipsLeft;
+      updateScore("Cpu", cpuBoard.shipsLeft);
       if (cpuBoard.shipsLeft === 0) {
-        h1.innerText = "Game Over! Player Wins!";
         gameOver = true;
+        displayGameOver("Player");
       }
     } else if (cpuBoard.recieveAttack([cordX, cordY]) === false) {
       // missed the shot
@@ -43,6 +36,7 @@ domCpuBoard.addEventListener("click", (e) => {
   }
 });
 
+// the AI will attack with this interval every second will check if is his turn or not
 setInterval(() => {
   if (!player.isPlayersTurn && !gameOver) {
     const randomCords = computer.getRandomCords();
@@ -52,11 +46,10 @@ setInterval(() => {
       ).dataset.state = "hit";
 
       player.isPlayersTurn = true;
-      domPlayerShipsLeft.innerText =
-        "Player Ships left: " + playerBoard.shipsLeft;
+      updateScore("player", playerBoard.shipsLeft);
       if (playerBoard.shipsLeft === 0) {
-        h1.innerText = "Game Over! Cpu Wins!";
         gameOver = true;
+        displayGameOver("Cpu");
       }
     } else if (playerBoard.recieveAttack(randomCords) === false) {
       // missed the shot
