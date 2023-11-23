@@ -4,6 +4,7 @@ import ComputerAi from "./ComputerAi.js";
 import {
   changeTurnsIndicator,
   displayGameOver,
+  displayPlayerShips,
   updateScore,
 } from "./domModule.js";
 
@@ -15,6 +16,7 @@ let cpuBoard = createGameboardDom(playerBoard.boardSize, "cpuBoard");
 let domCpuBoard = document.getElementById("cpuBoard");
 let gameOver = false;
 playerBoard.placeAllShips(3);
+displayPlayerShips(playerBoard, "playerBoard");
 cpuBoard.placeAllShips(3);
 
 updateScore("player", playerBoard.shipsLeft);
@@ -27,9 +29,11 @@ setInterval(() => {
   if (!player.isPlayersTurn && !gameOver) {
     const randomCords = computer.getRandomCords();
     if (playerBoard.recieveAttack(randomCords) === true) {
-      document.getElementById(
+      const hitLocation = document.getElementById(
         `playerBoardx${randomCords[0]}y${randomCords[1]}`
-      ).dataset.state = "hit";
+      );
+      hitLocation.dataset.state = "hit";
+      hitLocation.dataset.ship = null;
 
       player.isPlayersTurn = true;
       changeTurnsIndicator();
@@ -58,6 +62,7 @@ function restartGame() {
   playerBoard = createGameboardDom(playerBoard.boardSize, "playerBoard");
   cpuBoard = createGameboardDom(cpuBoard.boardSize, "cpuBoard");
   playerBoard.placeAllShips(3);
+  displayPlayerShips(playerBoard, "playerBoard");
   cpuBoard.placeAllShips(3);
   updateScore("player", playerBoard.shipsLeft);
   updateScore("cpu", cpuBoard.shipsLeft);

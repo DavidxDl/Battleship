@@ -32,12 +32,14 @@ export class Gameboard {
     ) {
       let index = 0;
       let currentX = x;
+
       while (index < length) {
         let position = `${currentX},${y}`;
         this.boardGraph.set(position, ship);
         index++;
         currentX++;
       }
+
       this.shipsLeft++;
       return true;
     } else if (
